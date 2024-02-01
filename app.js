@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 // 处理post请求的查询参数————需要引入body-parser中间件
 const bodyParser = require('body-parser');
 // 处理urlencoded格式参数
@@ -21,19 +23,19 @@ app.use(session({
   rolling: true, // 在每次请求时强行设置 cookie，这将重置 cookie 过期时间，默认：false
 }))
 // 全局过滤器
-app.use((req, res, next) => {
-  const { userInfo } = req.session;
-  if (req.url !== '/user/login') {
-    if (!userInfo) {
-      res.json({
-        code: "A0109",
-        msg: "登录会话失效，请重新登录"
-      });
-    } else {
-      next();
-    }
-  }
-});
+// app.use((req, res, next) => {
+//   const { userInfo } = req.session;
+//   if (req.url !== '/user/login') {
+//     if (!userInfo) {
+//       res.json({
+//         code: "A0109",
+//         msg: "登录会话失效，请重新登录"
+//       });
+//     } else {
+//       next();
+//     }
+//   }
+// });
 
 app.all('*', (req, res, next) => {
   // 设置任何域名都能允许跨域
@@ -47,11 +49,10 @@ app.all('*', (req, res, next) => {
 
 // 导入userRouter模块
 const userRouter = require('./Router/userRouter');
-const cookieParser = require('cookie-parser');
 // app调用use方法挂载路由
 app.use('/user', userRouter);
 
 // 监听窗口
-app.listen(8080, () => {
-  console.log('8080端口启动');
+app.listen(8081, () => {
+  console.log('8081端口启动');
 })

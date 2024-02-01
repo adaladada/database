@@ -5,9 +5,10 @@ const userRouter = express.Router();
 const login = require('../Controller/login');
 
 // 登录
-userRouter.get('/login', login.handleLogin)
+userRouter.post('/login', login.handleLogin)
 userRouter.post('/show', login.handleBookShow)
 userRouter.post('/borrow', login.handleBookBorrow)
 userRouter.post('/return', login.handleBookReturn)
+userRouter.post('/showReturn', login.handleBookReturnShow)
 
 module.exports = userRouter;
